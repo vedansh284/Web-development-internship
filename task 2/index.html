@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DevHub — a handcrafted frontend learning workspace built with care.">
+  <title>VedanshHub — Frontend Learning Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  
+  <header class="site-nav" id="navbar">
+    <nav class="nav-inner">
+      <a href="#home" class="wordmark">
+        <span class="wordmark-bracket">{</span>vedanshhub<span class="wordmark-bracket">}</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#todo" class="nav-link">Tasks</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button id="theme-toggle" class="theme-btn" aria-label="Switch colour mode" title="Toggle light / dark">
+          <span class="theme-icon theme-sun">☀</span>
+          <span class="theme-icon theme-moon">◑</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    
+    <section id="home" class="hero">
+      <div class="hero-eyebrow">hands-on dom &amp; layout study</div>
+      <h1 class="hero-headline">
+        Learning<br>
+        <em>front-end</em><br>
+        from the inside out.
+      </h1>
+      <p class="hero-body">
+        Real CSS Grid, real Flexbox, real JS — no frameworks, no shortcuts.
+        Every piece of this page was written by hand so you can read, break,
+        and rebuild it yourself.
+      </p>
+      <div class="hero-cta">
+        <a href="#todo" class="btn btn-ink">Try the task list</a>
+        <a href="#gallery" class="btn btn-ghost">Browse the gallery →</a>
+      </div>
+
+      <div class="tech-chips" aria-hidden="true">
+        <div class="chip chip-html">
+          <span class="chip-num">5</span>
+          <span class="chip-name">html</span>
+        </div>
+        <div class="chip chip-css">
+          <span class="chip-num">3</span>
+          <span class="chip-name">css</span>
+        </div>
+        <div class="chip chip-js">
+          <span class="chip-num">ES6</span>
+          <span class="chip-name">javascript</span>
+        </div>
+      </div>
+    </section>
+
+  
+    <section id="about" class="section about-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="label">what's inside</span>
+          <h2>Four moving parts,<br>one coherent page.</h2>
+          <p>Each feature is a real, working demonstration — not a mockup.</p>
+        </header>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>A navigation bar that actually works</h3>
+            <p>Sticky positioning, scroll-aware styles, mobile drawer with hamburger toggle — all in Flexbox, all readable.</p>
+            <span class="chip-tag">CSS Flexbox</span>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">02</div>
+            <h3>A contact form with honest validation</h3>
+            <p>Real-time regex checks, inline error messages, shake animation on failure, success toast on submit. No library, just event listeners.</p>
+            <span class="chip-tag">JS Validation</span>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>A task list that remembers you</h3>
+            <p>Add, complete, filter, and delete tasks. Everything persists through LocalStorage so a refresh doesn't wipe your work.</p>
+            <span class="chip-tag">DOM + LocalStorage</span>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-number">04</div>
+            <h3>A gallery with a real lightbox</h3>
+            <p>CSS Grid layout, live search, category filters, favouriting, custom image uploads, and a keyboard-navigable modal overlay.</p>
+            <span class="chip-tag">Grid + Modal</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="todo" class="section todo-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="label">interactive widget</span>
+          <h2>Your task list.</h2>
+          <p>Add something, check it off, clear the done ones. It'll all be here when you come back.</p>
+        </header>
+
+        <div class="todo-card">
+         
+          <div class="todo-input-row">
+            <div class="input-wrap">
+              <input type="text" id="todo-input" placeholder="What needs doing?" aria-label="New task">
+            </div>
+            <select id="todo-category" aria-label="Category">
+              <option value="Work">💼 Work</option>
+              <option value="Personal">🏠 Personal</option>
+              <option value="Study">📚 Study</option>
+              <option value="Urgent">🔥 Urgent</option>
+            </select>
+            <button id="todo-add-btn" class="btn btn-ink" type="button">
+              <span class="plus-icon">+</span> Add
+            </button>
+          </div>
+
+          <div class="todo-toolbar">
+            <span id="todo-count" class="todo-count-label">0 remaining</span>
+            <div class="filter-group">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="active">Active</button>
+              <button class="filter-btn" data-filter="completed">Done</button>
+            </div>
+            <button id="todo-clear-completed" class="clear-btn">Clear done</button>
+          </div>
+
+          
+          <ul id="todo-list" class="todo-list"></ul>
+
+         
+          <div id="todo-empty-state" class="empty-state">
+            <p class="empty-icon">✓</p>
+            <p>Nothing here yet — add a task above to get started.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="gallery" class="section gallery-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="label">media grid</span>
+          <h2>A gallery that<br>actually does things.</h2>
+          <p>Search, filter, favourite, upload your own images, and click anything to open the full-screen viewer.</p>
+        </header>
+
+      
+        <div class="gallery-controls">
+          <div class="search-wrap">
+            <span class="search-prefix">⌕</span>
+            <input type="text" id="gallery-search" placeholder="Search by title or tag…" aria-label="Search gallery">
+          </div>
+
+          <div class="gallery-filters" id="gallery-filters">
+            <button class="gf-btn active" data-gallery-filter="all">All</button>
+            <button class="gf-btn" data-gallery-filter="nature">Nature</button>
+            <button class="gf-btn" data-gallery-filter="tech">Tech</button>
+            <button class="gf-btn" data-gallery-filter="design">Design</button>
+            <button class="gf-btn" data-gallery-filter="favorites">❤ Saved</button>
+          </div>
+
+          <button id="toggle-upload-form-btn" class="btn btn-ghost">+ Add image</button>
+        </div>
+
+    
+        <div id="image-upload-panel" class="upload-panel hidden">
+          <h3>Add an image to the grid</h3>
+          <form id="image-upload-form" class="upload-form">
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="img-url">Image URL</label>
+                <input type="url" id="img-url" placeholder="https://images.unsplash.com/…" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="img-title">Title</label>
+                <input type="text" id="img-title" placeholder="Misty Pine Forest" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="img-category">Category</label>
+                <select id="img-category">
+                  <option value="nature">Nature</option>
+                  <option value="tech">Tech</option>
+                  <option value="design">Design</option>
+                </select>
+              </div>
+              <div class="form-group flex-1">
+                <label for="img-tags">Tags (comma-separated)</label>
+                <input type="text" id="img-tags" placeholder="green, forest, mist">
+              </div>
+            </div>
+            <div class="upload-actions">
+              <button type="button" id="cancel-upload-btn" class="btn btn-ghost">Cancel</button>
+              <button type="submit" class="btn btn-ink">Insert image</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid"></div>
+
+       
+        <div id="gallery-empty-state" class="empty-state hidden">
+          <p class="empty-icon">⬚</p>
+          <p>No photos match that search. Try a different term or filter.</p>
+        </div>
+      </div>
+    </section>
+
+   
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="label">get in touch</span>
+          <h2>Say something.<br>The form listens.</h2>
+          <p>Every field validates live. Hit send on an empty form and watch the feedback kick in.</p>
+        </header>
+
+        <div class="contact-grid">
+       
+          <aside class="contact-info">
+            <h3>Developer details</h3>
+            <p>All validation is client-side, written in plain JavaScript. The regex patterns, error states, and shake animation are real — nothing is faked.</p>
+
+            <dl class="info-list">
+              <div class="info-row">
+                <dt>Email</dt>
+                <dd>sandbox@devhub.local</dd>
+              </div>
+              <div class="info-row">
+                <dt>Environment</dt>
+                <dd>Local sandbox</dd>
+              </div>
+              <div class="info-row">
+                <dt>Validation</dt>
+                <dd>Regex, live + on submit</dd>
+              </div>
+            </dl>
+          </aside>
+
+        
+          <div class="contact-form-panel">
+            <form id="contact-form" class="contact-form" novalidate>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="contact-name" class="form-label">Your name</label>
+                  <div class="input-wrapper">
+                    <input type="text" id="contact-name" class="form-input" placeholder="Jane Smith">
+                    <span class="focus-line"></span>
+                  </div>
+                  <span class="err-msg" id="error-name">Name is required.</span>
+                </div>
+                <div class="form-group flex-1">
+                  <label for="contact-email" class="form-label">Email address</label>
+                  <div class="input-wrapper">
+                    <input type="email" id="contact-email" class="form-input" placeholder="jane@example.com">
+                    <span class="focus-line"></span>
+                  </div>
+                  <span class="err-msg" id="error-email">Please use a valid email format.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-subject" class="form-label">Subject</label>
+                <div class="input-wrapper">
+                  <input type="text" id="contact-subject" class="form-input" placeholder="What's this about?">
+                  <span class="focus-line"></span>
+                </div>
+                <span class="err-msg" id="error-subject">A subject helps.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-message" class="form-label">Your message</label>
+                <div class="input-wrapper">
+                  <textarea id="contact-message" class="form-input form-textarea" rows="5" placeholder="Type freely…"></textarea>
+                  <span class="focus-line"></span>
+                </div>
+                <span class="err-msg" id="error-message">Don't leave this empty.</span>
+              </div>
+
+              <button type="submit" class="btn btn-ink btn-wide">
+                Send it <span class="arrow-icon">→</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+ 
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lb-close" id="lightbox-close" aria-label="Close">✕</button>
+    <button class="lb-nav lb-prev" id="lightbox-prev" aria-label="Previous">‹</button>
+    <div class="lb-body">
+      <img id="lightbox-img" src="" alt="Fullscreen image preview">
+      <div class="lb-caption">
+        <h4 id="lightbox-title">Title</h4>
+        <span id="lightbox-category"></span>
+      </div>
+    </div>
+    <button class="lb-nav lb-next" id="lightbox-next" aria-label="Next">›</button>
+  </div>
+
+  
+  <div id="toast" class="toast hidden" role="status">
+    <span class="toast-check">✓</span>
+    <div>
+      <strong class="toast-title">Done</strong>
+      <p class="toast-msg">Action completed.</p>
+    </div>
+  </div>
+
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="wordmark"><span class="wordmark-bracket">{</span>vedanshhub<span class="wordmark-bracket">}</span></span>
+        <p>A handcrafted frontend workspace for learning HTML, CSS, and JavaScript from the inside out. No frameworks required.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#todo">Tasks</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-misc">
+        <h4>Made with</h4>
+        <p>Pure HTML, CSS &amp; Vanilla JS — no build step, no framework, no magic.</p>
+        <p class="copyright">© 2026 VedanshHub Sandbox</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
