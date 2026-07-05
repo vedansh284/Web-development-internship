@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="CineExplorer: Explore, search, and organize your favorite movies. Live updates from TMDB and offline mock support.">
+  <title>CineExplorer - Modern Movie Database</title>
+  
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    const POSTER_FALLBACK_URL = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNzUwIiB2aWV3Qm94PSIwIDAgNTAwIDc1MCI+PHJlY3Qgd2lkdGg9IjUwMCIgaGVpZ2h0PSI3NTAiIGZpbGw9IiMxMTE4MjciLz48cmVjdCB4PSI3MCIgeT0iMTIwIiB3aWR0aD0iMzYwIiBoZWlnaHQ9IjUxMCIgcng9IjI0IiBmaWxsPSIjMWYyOTM3IiBzdHJva2U9IiM0NzU1NjkiIHN0cm9rZS13aWR0aD0iNCIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjMxMCIgcj0iNzQiIGZpbGw9IiMzMzQxNTUiLz48cGF0aCBkPSJNMTk4IDQ0NGgxMDRsNTIgODZIMTQ2eiIgZmlsbD0iIzMzNDE1NSIvPjx0ZXh0IHg9IjI1MCIgeT0iNjEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmOGZhZmMiPk5vIFBvc3RlcjwvdGV4dD48L3N2Zz4=";
+    function handlePosterError(img) {
+      img.onerror = null; 
+      img.src = POSTER_FALLBACK_URL;
+    }
+  </script>
+</head>
+
+<body>
+
+  <header class="navbar-header" id="navbar">
+    <div class="container nav-container">
+
+      <a href="#" class="nav-logo" id="home-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+            <line x1="7" y1="2" x2="7" y2="22"></line>
+            <line x1="17" y1="2" x2="17" y2="22"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="2" y1="7" x2="7" y2="7"></line>
+            <line x1="2" y1="17" x2="7" y2="17"></line>
+            <line x1="17" y1="17" x2="22" y2="17"></line>
+            <line x1="17" y1="7" x2="22" y2="7"></line>
+          </svg>
+        </div>
+        <span class="logo-text">Cine<span class="logo-glow">Explorer</span></span>
+      </a>
+
+    
+      <div class="search-wrapper">
+        <form id="search-form" class="search-input-group">
+          <input type="text" id="search-input" placeholder="Search movies..." autocomplete="off"
+            aria-label="Search Movies">
+          <button type="button" id="clear-search" class="clear-search-btn" style="display: none;"
+            aria-label="Clear Search">&times;</button>
+          <button type="submit" class="search-icon-btn" aria-label="Submit Search">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+
+        
+        <div class="search-history-dropdown" id="search-history-dropdown">
+          <div class="history-header">
+            <span>Recent Searches</span>
+            <button type="button" class="clear-history-link" id="clear-history-btn">Clear All</button>
+          </div>
+          <ul class="history-list" id="history-items-list"></ul>
+        </div>
+      </div>
+
+  
+      <div class="nav-controls" id="nav-controls">
+        <ul class="nav-links-list">
+          <li><a href="#" class="nav-link active" id="nav-home">Home</a></li>
+          <li><a href="#" class="nav-link" id="nav-favorites">Favorites</a></li>
+          <li><a href="#" class="nav-link" id="nav-settings-trigger">API Settings</a></li>
+        </ul>
+
+      
+        <button id="theme-toggle" class="icon-btn theme-toggle-btn" aria-label="Toggle dark/light theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+
+    
+      <button class="hamburger-menu" id="hamburger-btn" aria-label="Toggle Navigation Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+
+   
+    <section class="hero-section" id="hero-section">
+      <div class="hero-glow-layer"></div>
+      <div class="container">
+        <div class="hero-showcase glass-panel" id="hero-showcase">
+          <div class="hero-backdrop-bg" id="hero-bg"></div>
+          <div class="hero-backdrop-overlay"></div>
+
+          <div class="hero-content">
+            <div class="hero-tag" id="hero-tag">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>Spotlight Movie</span>
+            </div>
+            <h1 class="hero-title" id="hero-title">Loading Spotlight...</h1>
+            <div class="hero-meta">
+              <span id="hero-year">2026</span>
+              <span>•</span>
+              <div class="hero-rating">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span id="hero-rating-value">0.0</span>
+              </div>
+              <span>•</span>
+              <span id="hero-lang">EN</span>
+            </div>
+            <p class="hero-desc" id="hero-desc">Discover outstanding cinematic releases, keep track of your favorites,
+              and explore in-depth metrics seamlessly.</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary" id="hero-details-btn">
+                <span>View Details</span>
+              </button>
+              <button class="btn btn-secondary" id="hero-fav-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"
+                  stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span>Add Favorite</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+    <section class="search-history-chips-section container" id="history-chips-section" style="display: none;">
+      <div class="chips-container" id="history-chips-container">
+        <span class="chips-title">Recent:</span>
+      </div>
+    </section>
+
+  
+    <section class="container movies-grid-section">
+
+     
+      <div class="content-toolbar">
+        <h2 class="toolbar-title" id="grid-section-title">Trending Movies</h2>
+        <div class="toolbar-actions">
+          <div class="sort-select-wrapper" id="sort-wrapper">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+            <select id="sort-select" aria-label="Sort Movies">
+              <option value="popularity-desc">Popularity (High - Low)</option>
+              <option value="rating-desc">Rating (High - Low)</option>
+              <option value="release_date-desc">Year (New - Old)</option>
+              <option value="title-asc">Title (A - Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="movies-grid" id="movies-grid"></div>
+
+     
+      <div class="empty-state-container" id="empty-state" style="display: none;">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" stroke="currentColor" stroke-width="2" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h3 class="empty-state-title">No Movies Found</h3>
+        <p class="empty-state-desc">We couldn't find any matches. Double-check your spelling, search term, or toggle
+          your API settings.</p>
+        <button class="btn btn-primary" id="empty-reset-btn">Back to Home</button>
+      </div>
+
+    </section>
+
+    
+    <div class="pagination-container" id="pagination-controls" style="display: none;">
+      <button class="btn btn-secondary pagination-btn" id="prev-page-btn" aria-label="Previous Page">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        <span>Prev</span>
+      </button>
+      <span class="page-num-indicator" id="page-num-display">Page 1 of 1</span>
+      <button class="btn btn-secondary pagination-btn" id="next-page-btn" aria-label="Next Page">
+        <span>Next</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+  </main>
+
+ 
+  <div class="modal-overlay-container" id="details-modal" role="dialog" aria-modal="true"
+    aria-labelledby="modal-movie-title">
+    <div class="modal-content-card glass-panel">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close Modal">&times;</button>
+      <div class="modal-grid">
+        <div class="modal-poster-wrapper">
+          <img src="" alt="Movie Poster" class="modal-poster" id="modal-movie-poster">
+        </div>
+        <div class="modal-details">
+          <h2 class="modal-title" id="modal-movie-title">Movie Title Details</h2>
+          <div class="modal-meta-row">
+            <span id="modal-movie-year">2026</span>
+            <span>•</span>
+            <span id="modal-movie-runtime">120 min</span>
+            <span>•</span>
+            <div class="modal-rating">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span id="modal-movie-rating">8.2</span>
+            </div>
+            <span>•</span>
+            <span class="modal-lang" id="modal-movie-lang">EN</span>
+          </div>
+          <div class="modal-genres" id="modal-movie-genres"></div>
+          <h3 class="modal-section-title">Overview</h3>
+          <p class="modal-overview" id="modal-movie-overview">Detailed overview of the movie description.</p>
+          <div class="modal-actions">
+            <button class="modal-fav-btn" id="modal-fav-toggle-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span id="modal-fav-text">Add to Favorites</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-overlay-container" id="api-settings-modal" role="dialog" aria-modal="true"
+    aria-labelledby="settings-title">
+    <div class="modal-content-card api-settings-panel glass-panel">
+      <button class="modal-close-btn" id="settings-close-btn" aria-label="Close Settings">&times;</button>
+      <h2 class="api-settings-title" id="settings-title">TMDB API Configuration</h2>
+      <p class="api-settings-desc">To query movies directly from the live TMDB service, enter your private V3 API Key
+        below. Leaving it blank uses our rich, offline fallback movie sandbox.</p>
+      <form id="api-settings-form">
+        <div class="form-group">
+          <label for="api-key-input" class="form-label">TMDB API Key (v3 auth)</label>
+          <input type="password" id="api-key-input" class="form-input" placeholder="e.g. 5d57b545fc117..."
+            autocomplete="off">
+        </div>
+        <div class="api-status-indicator">
+          <span>Active State:</span>
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Fallback Sandbox Mode</span>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+          <button type="button" class="btn btn-secondary" id="settings-cancel-btn">Close</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+  <div class="toast-box" id="toast-message">
+    <span class="toast-icon" id="toast-icon">✨</span>
+    <span class="toast-message" id="toast-text">Toast message content.</span>
+  </div>
+
+ 
+  <button class="icon-btn scroll-top-btn" id="scroll-top-btn" aria-label="Scroll to top">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"
+      stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
+
+  
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-text">
+        &copy; 2026 CineExplorer. Powered by TMDB API.
+      </div>
+      <div class="footer-meta">
+        <span>Favorites: <strong id="footer-favorites-count">0</strong></span>
+        <span>Search History: <strong id="footer-history-count">0</strong></span>
+        <span>Mode: <strong id="footer-mode-status">Sandbox</strong></span>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+
+</html>
