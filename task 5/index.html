@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal — AI Interview Prep Simulator</title>
+<meta name="description" content="Practice job interviews with AI-generated questions and instant feedback on every answer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <div class="app-header">
+    <div class="brand"><span class="dot"></span>Signal <small>AI INTERVIEW SIMULATOR</small></div>
+    <div class="header-actions">
+      <button class="reset-btn" id="historyBtn">📜 History</button>
+      <button class="reset-btn" id="themeToggleBtn">🌙 Dark</button>
+      <button class="reset-btn" id="resetBtn">↺ Start over</button>
+    </div>
+  </div>
+
+  <div class="stage setup" id="setupScreen">
+    <h1>Rehearse before it counts.</h1>
+    <p class="sub">Tell us the role you're prepping for. You'll get real interview questions, and honest feedback on every answer — before the real thing.</p>
+    <div class="field">
+      <label for="roleInput">Job role you're interviewing for</label>
+      <input type="text" id="roleInput" placeholder="e.g. Frontend Developer, Data Analyst, Product Intern" />
+    </div>
+    <div class="field">
+      <label>Experience level</label>
+      <div class="chip-row" id="levelChips">
+        <button class="chip active" data-level="Fresher / Intern">Fresher / Intern</button>
+        <button class="chip" data-level="Mid-level (1-3 yrs)">Mid-level (1-3 yrs)</button>
+        <button class="chip" data-level="Senior (4+ yrs)">Senior (4+ yrs)</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Number of questions</label>
+      <div class="chip-row" id="countChips">
+        <button class="chip" data-count="3">3 — Quick</button>
+        <button class="chip active" data-count="5">5 — Standard</button>
+        <button class="chip" data-count="7">7 — Deep dive</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Interviewer persona</label>
+      <div class="chip-row" id="personaChips">
+        <button class="chip active" data-persona="Friendly HR">🙂 Friendly HR</button>
+        <button class="chip" data-persona="Tough Technical Lead">🧑‍💻 Tough Technical Lead</button>
+        <button class="chip" data-persona="Curveball Panelist">🎭 Curveball Panelist</button>
+      </div>
+    </div>
+    <button class="primary-btn" id="startBtn">Start Mock Interview →</button>
+    <div id="setupError"></div>
+  </div>
+  
+  <div class="stage hidden" id="loadingScreen">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <div id="loadingText">Preparing your questions…</div>
+      <div class="loading-tip" id="loadingTip"></div>
+    </div>
+  </div>
+  
+  <div class="stage hidden" id="interviewScreen">
+    <div class="rail" id="progressRail"></div>
+    <div class="q-meta">
+      <span class="q-count" id="qCount">Question 1</span>
+      <span class="q-role-tag" id="qRoleTag">Role</span>
+    </div>
+    <div class="question-card">
+      <h2 id="questionText">—</h2>
+    </div>
+    <textarea id="answerInput" placeholder="Type your answer here, like you'd say it out loud…"></textarea>
+    <div class="answer-footer">
+      <span class="word-count" id="wordCount">0 words</span>
+      <div class="footer-right">
+        <span class="rec-indicator" id="recIndicator">
+          <span class="wave-bars" id="waveBars">
+            <span></span><span></span><span></span><span></span><span></span>
+          </span>
+          capturing response
+        </span>
+        <button class="mic-btn" id="micBtn" type="button" title="Speak your answer">🎤</button>
+        <button class="primary-btn" id="submitAnswerBtn">Submit Answer →</button>
+      </div>
+    </div>
+    <div class="confidence-row">
+      <span class="confidence-label">How confident do you feel about this answer?</span>
+      <div class="confidence-chips" id="confidenceChips">
+        <button class="conf-chip" data-conf="1" type="button">1</button>
+        <button class="conf-chip" data-conf="2" type="button">2</button>
+        <button class="conf-chip" data-conf="3" type="button">3</button>
+        <button class="conf-chip" data-conf="4" type="button">4</button>
+        <button class="conf-chip" data-conf="5" type="button">5</button>
+      </div>
+    </div>
+    <div id="interviewError"></div>
+    <div class="feedback-card hidden" id="feedbackCard">
+      <div class="score-row">
+        <div class="score-ring"><span id="scoreValue">–</span></div>
+        <div>
+          <div class="score-label">Answer Score</div>
+          <div class="score-outof">out of 10</div>
+        </div>
+      </div>
+      <div class="fb-grid">
+        <div class="fb-col strengths">
+          <h4>What worked</h4>
+          <ul id="strengthsList"></ul>
+        </div>
+        <div class="fb-col improve">
+          <h4>Sharpen this</h4>
+          <ul id="improvementsList"></ul>
+        </div>
+      </div>
+      <div class="tip-box"><b>Try rephrasing like</b><span id="tipText"></span></div>
+      <div class="next-btn-row">
+        <button class="primary-btn" id="nextBtn">Next Question →</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stage hidden" id="summaryScreen">
+    <div class="summary-hero">
+      <div class="summary-score"><span id="avgScore">–</span><span>/10 average</span></div>
+      <p id="summaryLine">Here's how the full interview went.</p>
+    </div>
+    <div id="breakdownList" class="breakdown-list"></div>
+    <div class="summary-actions">
+      <button class="ghost-btn" id="printBtn">🖨 Print / Save report</button>
+      <button class="primary-btn" id="retryBtn">Practice Again →</button>
+    </div>
+  </div>
+  
+  <div class="stage hidden" id="historyScreen">
+    <div class="history-header">
+      <h1 class="history-title">Past Attempts</h1>
+      <button class="ghost-btn" id="clearHistoryBtn">🗑 Clear History</button>
+    </div>
+    <div id="historyList" class="history-list"></div>
+    <div class="summary-actions">
+      <button class="ghost-btn" id="historyBackBtn">← Back</button>
+    </div>
+  </div>
+  <footer class="foot">Feedback is AI-generated to help you practice — always prep with real mentors too.</footer>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
